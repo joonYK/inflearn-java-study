@@ -1,4 +1,4 @@
-package defaultStaticMethod;
+package defaultAndStaticMethod;
 
 public class DefaultFoo implements Foo {
 

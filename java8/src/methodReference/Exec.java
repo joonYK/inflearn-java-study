@@ -1,4 +1,4 @@
-package functional.methodReference;
+package methodReference;
 
 import java.util.Arrays;
 import java.util.function.Function;

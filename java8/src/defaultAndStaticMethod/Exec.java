@@ -1,4 +1,4 @@
-package defaultStaticMethod;
+package defaultAndStaticMethod;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Spliterator;
 
 /*
- * 인터페이스 기본 메서드를 사용할 수 있게 되면서 인터페이스의 모든 메서드를 구현할 필요가 없는 경우에 대한 처리가 편해졌다.
+ * 인터페이스 default 메서드를 사용할 수 있게 되면서 인터페이스의 모든 메서드를 구현할 필요가 없는 경우에 대한 처리가 편해졌다.
  * 예전에는 인터페이스를 상속받는 abstract 클래스를 만들고 그 안에 내용이 없는 구현 클래스들을 만들어서 상속받는 클래스들이 필요한 메서드만 구현하도록 제공했다.
  */
 public class Exec {

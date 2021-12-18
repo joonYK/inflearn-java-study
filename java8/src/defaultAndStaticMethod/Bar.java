@@ -1,4 +1,4 @@
-package defaultStaticMethod;
+package defaultAndStaticMethod;
 
 public interface Bar extends Foo {
 

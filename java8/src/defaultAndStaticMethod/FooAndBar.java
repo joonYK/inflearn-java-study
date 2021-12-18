@@ -1,4 +1,4 @@
-package defaultStaticMethod;
+package defaultAndStaticMethod;
 
 public class FooAndBar implements Foo, Bar {
 

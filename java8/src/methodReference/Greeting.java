@@ -1,4 +1,4 @@
-package functional.methodReference;
+package methodReference;
 
 public class Greeting {
 
