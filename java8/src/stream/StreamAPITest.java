@@ -1,4 +1,4 @@
-package streamAPI;
+package stream;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -7,7 +7,8 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class Exec {
+public class StreamAPITest {
+
     public static void main(String[] args) {
         List<OnlineClass> springClasses = new ArrayList<>();
         springClasses.add(new OnlineClass(1, "spring boot", true));
@@ -65,6 +66,5 @@ public class Exec {
                 .collect(Collectors.toList());
 
         stringList.forEach(System.out::println);
-
     }
 }

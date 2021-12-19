@@ -1,6 +1,6 @@
-package streamAPI;
+package stream;
 
-public class OnlineClass {
+class OnlineClass {
     private Integer id;
 
     private String title;
