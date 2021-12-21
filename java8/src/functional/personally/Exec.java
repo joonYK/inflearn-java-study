@@ -26,7 +26,7 @@ public class Exec {
         RunAdd runAdd = number -> number + 10;
 
         //1을 넣었으면 계속 11이 나와야 함.
-        //이것을 보장해주는 상황이 발생하거나 그런 여지가 있으면 함수형 프로그래밍이라 하기 힘듬.
+        //이것을 보장해줄 수 없는 상황이 발생하거나 그런 여지가 있으면 함수형 프로그래밍이라 하기 힘듬.
         System.out.println(runAdd.doInt(1));
         System.out.println(runAdd.doInt(1));
         System.out.println(runAdd.doInt(1));
