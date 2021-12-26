@@ -1,9 +1,12 @@
 package concurrent;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.stream.Collectors;
 
 /**
  * 기존 Future로 하기 힘들었던 작업들
@@ -95,19 +98,67 @@ public class CompletableFutureExec {
         System.out.println();
 
         //서로 의존성이 없는 작업들간의 조합
-        CompletableFuture<String> hello1 = CompletableFuture.supplyAsync(() -> {
-            System.out.println("Hello : " + Thread.currentThread().getName());
-            return "Hello";
-        });
-
         CompletableFuture<String> world = CompletableFuture.supplyAsync(() -> {
             System.out.println("World : " + Thread.currentThread().getName());
             return "World";
         });
 
-        //thenCombie을 사용해서 hello의 결과와 world의 결과를 각각 받아서 처리(BiFunction).
-        CompletableFuture<String> combineFuture = hello1.thenCombine(world, (h, w) -> h + " " + w);
+        //thenCombine을 사용해서 hello와 world의 결과를 각각 받아서 처리(BiFunction).
+        CompletableFuture<String> combineFuture = hello.thenCombine(world, (h, w) -> h + " " + w);
         System.out.println(combineFuture.get());
+
+        System.out.println();
+
+        //모든 작업들을 한번에 넘겨서 처리 : allOf
+        //allOf의 callback은 파라미터가 void 타입이므로 combine처럼 작업 결과를 받아 처리할 수 없음.
+        //아래처럼 callback 의 파라미터가 아닌 외부의 데이터를 이용해서 처리하는 방식으로 사용 가능.
+        List<CompletableFuture<String>> futures = Arrays.asList(hello, world);
+        CompletableFuture[] futuresArray = futures.toArray(new CompletableFuture[futures.size()]);
+
+        CompletableFuture<List<String>> results = CompletableFuture.allOf(futuresArray)
+                .thenApply(v -> futures.stream()
+                        .map(CompletableFuture::join) //get은 checked Exception 을 발생시키리 때문에 unchecked Exception을 사용하는 join 사용.
+                        .collect(Collectors.toList()));
+        results.get().forEach(System.out::println);
+
+        System.out.println();
+
+        //먼저 작업이 끝나는 것 하나만 처리 : anyOf
+        CompletableFuture<Void> future = CompletableFuture.anyOf(hello, world).thenAccept(System.out::println);
+        future.get();
+
+        System.out.println();
+
+        //예외 처리
+
+        boolean throwError = true;
+
+        CompletableFuture<String> errorFuture = CompletableFuture.supplyAsync(() -> {
+            if (throwError)
+                throw new IllegalArgumentException();
+            return "aaa";
+        }).exceptionally(ex -> {
+            // 에러 발생 시 이 구간으로 들어옴
+            return "Error!";
+        });
+
+        System.out.println(errorFuture.get());
+
+        System.out.println();
+
+        CompletableFuture<String> errorFuture2 = CompletableFuture.supplyAsync(() -> {
+            if (throwError)
+                throw new IllegalArgumentException();
+            return "bbb";
+        }).handle((result, ex) -> { //정상적인 경우, 에러가 발생한 경우 모두 처리
+            if (ex != null) {
+                System.out.println(ex);
+                return "ERROR!!";
+            }
+            return result;
+        });
+
+        System.out.println(errorFuture2.get());
 
     }
 
